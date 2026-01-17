@@ -1,0 +1,47 @@
+[project]
+name = "simio"
+version = "0.1.0"
+description = "Simple zero-dependency asynchronous IO"
+license = "Unlicense"
+authors = [
+    {name = "Dmitry Pershin", email = "dapper1291@gmail.com"}
+]
+keywords = ["async", "io", "networking", "streams", "simio"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "License :: Public Domain",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Utilities",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Typing :: Typed",
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+]
+
+[project.urls]
+Homepage = "https://github.com/dapper91/simio"
+Documentation = "https://github.com/dapper91/simio"
+Repository = "https://github.com/dapper91/simio"
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "mypy (>=1.19.1,<2.0.0)",
+    "pytest (>=9.0.2,<10.0.0)",
+    "pytest-asyncio (>=1.3.0,<2.0.0)"
+]
+pre-commit = [
+    "pre-commit (>=4.5.1,<5.0.0)"
+]
