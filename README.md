@@ -6,11 +6,11 @@
 [download-badge]: https://static.pepy.tech/personalized-badge/aio?period=month&units=international_system&left_color=grey&right_color=orange&left_text=Downloads/month
 [download-url]: https://pepy.tech/project/aio
 [licence-badge]: https://img.shields.io/badge/license-Unlicense-blue.svg
-[licence-url]: https://github.com/dapper91/aio/blob/master/LICENSE
+[licence-url]: https://github.com/dapper91/python-aio/blob/master/LICENSE
 [python-version-badge]: https://img.shields.io/pypi/pyversions/aio.svg
 [python-version-url]: https://pypi.org/project/aio
-[build-badge]: https://github.com/dapper91/aio/actions/workflows/test.yml/badge.svg?branch=master
-[build-url]: https://github.com/dapper91/aio/actions/workflows/test.yml
+[build-badge]: https://github.com/dapper91/python-aio/actions/workflows/test.yml/badge.svg?branch=master
+[build-url]: https://github.com/dapper91/python-aio/actions/workflows/test.yml
 
 # aio
 
@@ -22,11 +22,12 @@ Python 3.4 introduced native support for asynchronous code and announced
 [asyncio](https://docs.python.org/3/library/asyncio.html) standard library. async/await syntax provided a very
 convenient way to write single-threaded concurrent code but asyncio library itself caused a lot of pain to developers
 since it was ugly designed and provides very inconvenient api and asynchronous primitives. To fix that problem
-developers implemented some libraries to replace standard one like [trio](https://trio.readthedocs.io),
+developers implemented some third-party libraries to replace the standard one like [trio](https://trio.readthedocs.io),
 
 You may use [trio](https://trio.readthedocs.io) or
 [anyio](https://anyio.readthedocs.io), but trio implements its own runtime, anyio although work on top
 of asyncio but provides too high level interface which may be undesirable for small projects.
+
 This library is intended to solve some of that tensions.
 
 ## Features
