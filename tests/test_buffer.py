@@ -38,6 +38,10 @@ def test_circular_buffer_copy():
 
 def test_circular_buffer_append_pop():
     buffer = CircularBuffer(capacity=5)
+
+    buffer.append(b'')
+    assert buffer.pop() == b''
+
     buffer.append(b'12345')
     assert buffer.pop() == b'12345'
 
@@ -58,6 +62,7 @@ def test_circular_buffer_append_pop():
 def test_deque_buffer_pop_all():
     buffer = DequeBuffer()
 
+    buffer.append(b"")
     buffer.append(b"0")
     buffer.append(b"12")
     buffer.append(b"345")

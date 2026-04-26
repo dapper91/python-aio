@@ -5,7 +5,19 @@ from typing import Optional, Self, Union
 from simio.buffer import Buffer, BufferOverflowError, DequeBuffer
 
 
-class IncompleteError(Exception):
+class StreamError(Exception):
+    """
+    Stream base error.
+    """
+
+
+class StreamClosed(StreamError):
+    """
+    Raised when data is read from or written to closed stream.
+    """
+
+
+class IncompleteError(StreamError):
     """
     Raised when the underlying buffer is closed before requested number of bytes received
     or provided delimiter is found.
