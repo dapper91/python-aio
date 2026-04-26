@@ -2,7 +2,7 @@ import socket as sc
 from typing import Any, Optional, Union
 
 from simio.net.address import SocketAddress
-from simio.stream import Stream
+from simio.stream import Stream, StreamClosed
 
 from .socket import TcpSocket
 
@@ -20,10 +20,22 @@ class TcpStream[TcpSocketT: TcpSocket[Any]](Stream):
         return self._socket
 
     async def read(self, max_bytes: int) -> bytes:
-        return await self._socket.recv(max_bytes)
+        try:
+            data = await self._socket.recv(max_bytes)
+        except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError) as e:
+            raise StreamClosed() from e
+
+        if not data:
+            raise StreamClosed()
+
+        return data
 
     async def write(self, data: Union[bytes, bytearray, memoryview]) -> int:
-        await self._socket.sendall(data)
+        try:
+            await self._socket.sendall(data)
+        except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError) as e:
+            raise StreamClosed() from e
+
         return len(data)
 
     async def close_reader(self) -> None:
