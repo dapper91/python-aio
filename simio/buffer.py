@@ -1,7 +1,7 @@
 import abc
 from collections import deque
 from collections.abc import Sized
-from typing import Optional
+from typing import Optional, Union
 
 
 class BufferOverflowError(Exception):
@@ -43,7 +43,7 @@ class Buffer(abc.ABC, Sized):
         """
 
     @abc.abstractmethod
-    def append(self, data: bytes) -> None:
+    def append(self, data: Union[bytes, bytearray, memoryview]) -> None:
         """
         Appends data to the buffer.
 
@@ -88,11 +88,11 @@ class DequeBuffer(Buffer):
     def max_size(self) -> Optional[int]:
         return self._max_size
 
-    def append(self, data: bytes) -> None:
+    def append(self, data: Union[bytes, bytearray, memoryview]) -> None:
         if self._max_size is not None and self._buffer_size + len(data) > self._max_size:
             raise BufferOverflowError()
 
-        self._buffer.append(data)
+        self._buffer.append(bytes(data))
         self._buffer_size += len(data)
 
     def pop(self, max_bytes: Optional[int] = None) -> bytes:
@@ -150,7 +150,7 @@ class CircularBuffer(Buffer):
     def max_size(self) -> int:
         return self.capacity
 
-    def append(self, data: bytes) -> None:
+    def append(self, data: Union[bytes, bytearray, memoryview]) -> None:
         if self.size + len(data) > self.capacity:
             raise BufferOverflowError()
 

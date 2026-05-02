@@ -29,7 +29,7 @@ class TcpSocket[AddressT: SocketAddress](Socket[AddressT]):
 
         return await loop.sock_recv_into(self._raw, buf)
 
-    async def sendall(self, data: Union[bytes, bytearray]) -> None:
+    async def sendall(self, data: Union[bytes, bytearray, memoryview]) -> None:
         loop = aio.get_running_loop()
 
         return await loop.sock_sendall(self._raw, data)

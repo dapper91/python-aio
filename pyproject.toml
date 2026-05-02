@@ -1,7 +1,7 @@
 [project]
 name = "simio"
 version = "1.1.0"
-description = "Simple zero-dependency asynchronous IO"
+description = "Simple lightweight zero-dependency asynchronous IO library"
 license = "Unlicense"
 authors = [
     {name = "Dmitry Pershin", email = "dapper1291@gmail.com"}

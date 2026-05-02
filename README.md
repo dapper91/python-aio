@@ -14,7 +14,7 @@
 
 # simio
 
-Python simple zero-dependency asynchronous IO.
+Python simple lightweight zero-dependency asynchronous IO library.
 
 ## Motivation
 
@@ -55,7 +55,10 @@ from simio import net, stream
 
 
 async def main() -> None:
-    async with await net.open_tcp_stream("httpforever.com", 80) as http_stream:
+    async with await net.open_tcp_stream(
+            address=net.IPv4Address("httpforever.com", 80),
+            socket=net.TcpSocketInet(),
+    ) as http_stream:
         buffered_stream = stream.BufferedStream(http_stream)
         await buffered_stream.write_all(
             b'GET / HTTP/1.1\r\n'
@@ -85,9 +88,7 @@ import logging
 from simio import net
 
 
-async def echo(socket: net.TcpSocket) -> None:
-    logging.info("client %s connected", socket.getpeername())
-
+async def echo(socket: net.TcpSocket[net.IPv4Address]) -> None:
     data = await socket.recv(1024)
     await socket.sendall(data)
 
@@ -95,7 +96,12 @@ async def echo(socket: net.TcpSocket) -> None:
 async def main() -> None:
     logging.basicConfig(level=logging.INFO)
 
-    await net.start_tcp_server("127.0.0.1", 8080, echo, graceful_shutdown=10.0)
+    await net.start_tcp_server(
+        net.IPv4Address("127.0.0.1", 8080),
+        srv_socket=net.TcpSocketInet(),
+        handler=echo,
+        graceful_shutdown=10.0,
+    )
 
 
 aio.run(main())
@@ -111,11 +117,52 @@ from simio import net
 
 
 async def main() -> None:
-    async with await net.open_tcp_stream("127.0.0.1", 8080) as tcp_stream:
+    async with await net.open_tcp_stream(
+            address=net.IPv4Address("127.0.0.1", 8080),
+            socket=net.TcpSocketInet(),
+    ) as tcp_stream:
         await tcp_stream.write(b"Hello World!!!")
 
         while data := await tcp_stream.read(1024):
             print(data)
+
+
+aio.run(main())
+
+```
+
+
+### TLS client stream:
+
+```python
+import asyncio as aio
+
+from simio import net, stream, tls
+
+
+async def main() -> None:
+    hostname = "www.wikipedia.org"
+
+    async with await net.open_tcp_stream(net.IPv4Address(hostname, 443), socket=net.TcpSocketInet()) as tcp_stream:
+        async with tls.open_tls_stream(tcp_stream, server_side=False, server_hostname=hostname) as tls_stream:
+            http_stream = stream.BufferedStream(tls_stream)
+            await http_stream.write_all(
+                b'GET / HTTP/1.0\r\n'
+                b'Host: www.wikipedia.org\r\n'
+                b'User-Agent: simio\r\n'
+                b'\r\n',
+            )
+            status = await http_stream.read_until(b'\r\n')
+            print(status.decode())
+
+            raw_headers = await http_stream.read_until(b'\r\n\r\n')
+            headers: dict[bytes, bytes] = {}
+            for line in raw_headers.removesuffix(b'\r\n\r\n').split(b'\r\n'):
+                key, value = line.split(b':', maxsplit=1)
+                headers[key.lower()] = value.lstrip()
+
+            body = await http_stream.read_exactly(size=int(headers[b'content-length']))
+            print(body.decode())
 
 
 aio.run(main())
