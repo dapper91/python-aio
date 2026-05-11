@@ -1,6 +1,6 @@
 import pytest
 
-from simio.buffer import BufferOverflowError, CircularBuffer
+from simio.buffer import BufferOverflowError, CircularByteBuffer
 from simio.stream import BufferedStreamReader, BufferedStreamWriter, IncompleteError
 from tests import utils
 
@@ -66,7 +66,7 @@ async def test_stream_buffered_stream_read_until_buffer_overflow():
     stream = utils.MemoryStream(read_chunk_size=4)
     await stream.write(b"00001")
 
-    reader = BufferedStreamReader(reader=stream, buffer=CircularBuffer(4))
+    reader = BufferedStreamReader(reader=stream, buffer=CircularByteBuffer(4))
 
     with pytest.raises(BufferOverflowError):
         await reader.read_until(b"1")
@@ -79,7 +79,7 @@ async def test_stream_buffered_stream_read_exactly_buffer_overflow():
     stream = utils.MemoryStream(read_chunk_size=4)
     await stream.write(b"00001")
 
-    reader = BufferedStreamReader(reader=stream, buffer=CircularBuffer(4))
+    reader = BufferedStreamReader(reader=stream, buffer=CircularByteBuffer(4))
 
     with pytest.raises(BufferOverflowError):
         await reader.read_exactly(5)

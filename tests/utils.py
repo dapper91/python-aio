@@ -1,6 +1,6 @@
 from typing import Optional, Union
 
-from simio.buffer import DequeBuffer
+from simio.buffer import DequeByteBuffer
 from simio.stream import StreamReader, StreamWriter
 
 
@@ -12,7 +12,7 @@ class MemoryStream(StreamReader, StreamWriter):
     def __init__(self, read_chunk_size: Optional[int] = None, write_chunk_size: Optional[int] = None):
         self._read_chunk_size = read_chunk_size
         self._write_chunk_size = write_chunk_size
-        self._buffer = DequeBuffer()
+        self._buffer = DequeByteBuffer()
         self._reader_closed = False
         self._writer_closed = False
 

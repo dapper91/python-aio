@@ -1,13 +1,13 @@
-from simio.buffer import CircularBuffer, DequeBuffer
+from simio.buffer import CircularByteBuffer, DequeByteBuffer
 
 
 def test_circular_buffer_capacity():
-    buffer = CircularBuffer(capacity=5)
+    buffer = CircularByteBuffer(capacity=5)
     assert buffer.capacity == 5
 
 
 def test_circular_buffer_size():
-    buffer = CircularBuffer(capacity=5)
+    buffer = CircularByteBuffer(capacity=5)
     assert buffer.size == 0
 
     buffer.append(b'12345')
@@ -27,7 +27,7 @@ def test_circular_buffer_size():
 
 
 def test_circular_buffer_copy():
-    buffer = CircularBuffer(capacity=5)
+    buffer = CircularByteBuffer(capacity=5)
     buffer.append(b'12345')
 
     assert buffer.copy(max_bytes=1) == b'1'
@@ -37,7 +37,7 @@ def test_circular_buffer_copy():
 
 
 def test_circular_buffer_append_pop():
-    buffer = CircularBuffer(capacity=5)
+    buffer = CircularByteBuffer(capacity=5)
 
     buffer.append(b'')
     assert buffer.pop() == b''
@@ -60,7 +60,7 @@ def test_circular_buffer_append_pop():
 
 
 def test_deque_buffer_pop_all():
-    buffer = DequeBuffer()
+    buffer = DequeByteBuffer()
 
     buffer.append(b"")
     buffer.append(b"0")
@@ -73,7 +73,7 @@ def test_deque_buffer_pop_all():
 
 
 def test_deque_buffer_pop_max_bytes():
-    buffer = DequeBuffer()
+    buffer = DequeByteBuffer()
 
     buffer.append(b"0")
     buffer.append(b"12")
@@ -98,7 +98,7 @@ def test_deque_buffer_pop_max_bytes():
 
 
 def test_deque_buffer_copy():
-    buffer = DequeBuffer()
+    buffer = DequeByteBuffer()
 
     buffer.append(b"0")
     buffer.append(b"12")

@@ -1,7 +1,7 @@
 from types import TracebackType
 from typing import Optional, Union
 
-from simio.buffer import DequeBuffer
+from simio.buffer import DequeByteBuffer
 from simio.queue import Queue
 from simio.stream import Stream, StreamClosed
 
@@ -82,8 +82,8 @@ class MemoryPipe:
     """
 
     def __init__(self, buf_size: int = 4096):
-        self._l2r_channel = MemoryChannel(Queue(DequeBuffer(max_size=buf_size)))
-        self._r2l_channel = MemoryChannel(Queue(DequeBuffer(max_size=buf_size)))
+        self._l2r_channel = MemoryChannel(Queue(DequeByteBuffer(max_size=buf_size)))
+        self._r2l_channel = MemoryChannel(Queue(DequeByteBuffer(max_size=buf_size)))
 
         self._left_stream = MemoryStream(in_channel=self._r2l_channel, out_channel=self._l2r_channel)
         self._right_stream = MemoryStream(in_channel=self._l2r_channel, out_channel=self._r2l_channel)

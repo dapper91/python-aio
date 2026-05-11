@@ -2,12 +2,12 @@ import asyncio as aio
 
 import pytest
 
-from simio.buffer import CircularBuffer
+from simio.buffer import CircularByteBuffer
 from simio.queue import Queue, QueueEmpty, QueueFull
 
 
 async def test_queue_push_no_wait():
-    queue = Queue(buffer=CircularBuffer(capacity=3))
+    queue = Queue(buffer=CircularByteBuffer(capacity=3))
 
     queue.push_nowait(b"123")
 
@@ -20,7 +20,7 @@ async def test_queue_push_no_wait():
 
 
 async def test_queue_pop_no_wait():
-    queue = Queue(buffer=CircularBuffer(capacity=3))
+    queue = Queue(buffer=CircularByteBuffer(capacity=3))
 
     queue.push_nowait(b"123")
 
@@ -34,7 +34,7 @@ async def test_queue_pop_no_wait():
 
 
 async def test_queue_push_pop():
-    queue = Queue(buffer=CircularBuffer(capacity=5))
+    queue = Queue(buffer=CircularByteBuffer(capacity=5))
     done = aio.Event()
 
     async def sender() -> bytes:

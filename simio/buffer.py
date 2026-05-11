@@ -10,7 +10,7 @@ class BufferOverflowError(Exception):
     """
 
 
-class Buffer(abc.ABC, Sized):
+class ByteBuffer(abc.ABC, Sized):
     """
     Buffer interface.
     """
@@ -68,7 +68,7 @@ class Buffer(abc.ABC, Sized):
         """
 
 
-class DequeBuffer(Buffer):
+class DequeByteBuffer(ByteBuffer):
     """
     Dequeue buffer implementation.
 
@@ -126,7 +126,7 @@ class DequeBuffer(Buffer):
         return data
 
 
-class CircularBuffer(Buffer):
+class CircularByteBuffer(ByteBuffer):
     """
     Circular (ring) buffer implementation.
 

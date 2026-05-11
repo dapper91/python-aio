@@ -1,7 +1,7 @@
 import asyncio as aio
 from typing import Optional
 
-from simio.buffer import Buffer
+from simio.buffer import ByteBuffer
 
 
 class QueueFull(Exception):
@@ -29,7 +29,7 @@ class Queue:
     :param buffer: internal buffer
     """
 
-    def __init__(self, buffer: Buffer):
+    def __init__(self, buffer: ByteBuffer):
         self._buffer = buffer
         self._buffer_changed = aio.Event()
 

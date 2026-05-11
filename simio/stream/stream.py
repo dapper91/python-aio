@@ -2,7 +2,7 @@ import abc
 from types import TracebackType
 from typing import Optional, Self, Union
 
-from simio.buffer import Buffer, BufferOverflowError, DequeBuffer
+from simio.buffer import BufferOverflowError, ByteBuffer, DequeByteBuffer
 
 
 class StreamError(Exception):
@@ -53,9 +53,9 @@ class BufferedStreamReader(StreamReader):
     :param buffer: buffer instance
     """
 
-    def __init__(self, reader: StreamReader, buffer: Optional[Buffer] = None):
+    def __init__(self, reader: StreamReader, buffer: Optional[ByteBuffer] = None):
         self._reader = reader
-        self._read_buffer: Buffer = buffer if buffer is not None else DequeBuffer()
+        self._read_buffer: ByteBuffer = buffer if buffer is not None else DequeByteBuffer()
 
     async def __aenter__(self) -> Self:
         return self
@@ -240,9 +240,9 @@ class BufferedStreamWriter(StreamWriter):
     :param buffer: buffer instance
     """
 
-    def __init__(self, writer: StreamWriter, buffer: Optional[Buffer] = None):
+    def __init__(self, writer: StreamWriter, buffer: Optional[ByteBuffer] = None):
         self._writer = writer
-        self._write_buffer: Buffer = buffer if buffer is not None else DequeBuffer()
+        self._write_buffer: ByteBuffer = buffer if buffer is not None else DequeByteBuffer()
 
     async def write(self, data: Union[bytes, bytearray, memoryview]) -> int:
         """
@@ -314,6 +314,11 @@ class BufferedStream(BufferedStreamWriter, BufferedStreamReader, Stream):
     Asynchronous buffered stream.
     """
 
-    def __init__(self, stream: Stream, read_buffer: Optional[Buffer] = None, write_buffer: Optional[Buffer] = None):
+    def __init__(
+            self,
+            stream: Stream,
+            read_buffer: Optional[ByteBuffer] = None,
+            write_buffer: Optional[ByteBuffer] = None,
+    ):
         BufferedStreamReader.__init__(self, stream, buffer=read_buffer)
         BufferedStreamWriter.__init__(self, stream, buffer=write_buffer)
